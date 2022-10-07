@@ -1,15 +1,16 @@
 const express = require('express');
 const mongoose = require('mongoose')
+require('dotenv').config();
 
 const app = express();
 
-
+mongoose.connect(process.env.DATABASE_URL,
+{ useNewUrlParser: true,
+  useUnifiedTopology: true })
+  .then(() => console.log('Connexion à MongoDB réussie !'))
+  .catch(() => console.log('Connexion à MongoDB échouée !', process.env.DATABASE_URL));
 
 app.use(express.json())
-
-app.get('/api/debut', (req, res, next)=>{
-    res.status(200).json({message : "connecter"})
-})
 
 app.listen(3000, (err)=>{
     if(err) throw err;

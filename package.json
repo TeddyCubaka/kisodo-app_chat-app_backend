@@ -11,5 +11,13 @@
     "mongoose": "^6.6.5",
     "mongoose-unique-validator": "^3.1.0",
     "nodemon": "^2.0.20"
+  },
+  "scripts": {
+    "start": "nodemon app.js",
+    "dev": "env-cmd -f ./env/.env.dev node index.js",
+    "prod": "env-cmd -f ./env/.env.prod node index.js"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.3"
   }
 }
