@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
     mail : {type : String, required : true, unique : true},
     biography : {type : String},
     image : {type : String},
+    password : {type : String},
     joinDate : {type : Date},
     isOnline : {type : Boolean},
     inbox : [{
