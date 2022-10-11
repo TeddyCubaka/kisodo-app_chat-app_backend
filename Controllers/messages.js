@@ -20,3 +20,9 @@ exports.fingAllMessage = (req, res) => {
     })
     .catch((err) => res.status(500).json({ err }));
 };
+
+exports.deleteMessage = (req, res) => {
+  Message.deleteOne({ _id: req.params.id })
+    .then(() => res.status(200).json({ message: "message supprimé !" }))
+    .catch((error) => res.status(404).json({ error }));
+}

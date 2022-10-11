@@ -18,5 +18,6 @@ router.use((req, res, next) => {
 
 router.post("/", messageCtrl.writeMessage);
 router.get("/", messageCtrl.fingAllMessage)
+router.delete("/:id", messageCtrl.deleteMessage)
 
 module.exports = router;
