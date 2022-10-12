@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const messageCtrl = require("../Controllers/messages");
+const discutCtrl = require("../Controllers/discussions");
 
 router.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -16,8 +16,8 @@ router.use((req, res, next) => {
   next();
 });
 
-router.get("/", messageCtrl.fingAllMessage);
-router.post("/", messageCtrl.writeMessage);
-router.delete("/:id", messageCtrl.deleteMessage);
+router.get('/', discutCtrl.findAlldiscussion)
+router.post('/', discutCtrl.createDiscussion)
+
 
 module.exports = router;

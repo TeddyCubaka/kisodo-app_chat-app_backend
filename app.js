@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 const userRoute = require("./Routes/user");
 const messageRoute = require("./Routes/message");
+const discusionRouter = require("./Routes/discussions")
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(express.json());
 
 app.use("/api/user", userRoute);
 app.use("/api/message", messageRoute);
+app.use("/api/discussion", discusionRouter)
 
 
 app.listen(3000, (err) => {
