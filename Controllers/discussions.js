@@ -1,4 +1,5 @@
 const Discussion = require("../models/discusion");
+const Message = require("../models/message")
 
 exports.createDiscussion = (req, res) => {
   const discussion = new Discussion({ ...req.body });
@@ -26,7 +27,7 @@ exports.findAlldiscussion = (req, res) => {
 exports.insertMessage = (req, res) => {
   Discussion.updateOne(
     { _id: req.body.discussionId },
-    { messages: req.body.message })
+    { $push : { messages : req.body.message }})
     .then(() =>
       res.status(201).json({
         message: "Missage ajouté with succès !",

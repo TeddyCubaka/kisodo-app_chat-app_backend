@@ -16,9 +16,11 @@ router.use((req, res, next) => {
   next();
 });
 
-router.get('/', discutCtrl.findAlldiscussion)
-router.post('/', discutCtrl.createDiscussion)
-router.post('/add_message', discutCtrl.insertMessage)
-router.get('/:id', discutCtrl.findOneDiscussion)
+router.get("/", discutCtrl.findAlldiscussion);
+router.post("/", discutCtrl.createDiscussion);
+router.post("/add_message", discutCtrl.insertMessage);
+router.get("/:id", discutCtrl.findOneDiscussion);
+
+
 
 module.exports = router;
