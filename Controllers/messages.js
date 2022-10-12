@@ -1,7 +1,7 @@
 const Message = require("../models/message");
 
 exports.writeMessage = (req, res, next) => {
-  req.body.sendDate = new Date();
+  req.body.sendDate = new Date().toLocaleDateString();
   const message = new Message({ ...req.body });
   message
     .save()
