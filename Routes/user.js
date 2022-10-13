@@ -16,6 +16,7 @@ router.use((req, res, next) => {
   next();
 });
 
+router.post("/login", userCtrl.login);
 router.post("/signup", userCtrl.signup);
 router.post("/:id", userCtrl.updateUser);
 router.get("/", userCtrl.getAllUsers);

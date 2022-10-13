@@ -33,21 +33,20 @@ module.exports.signup = (req, res) => {
         .then(() => res.status(201).json({ message: "utilisateur ajouté !" }))
         .catch((err) => res.status(400).json({ err }));
     })
-    .catch((err) => res.status(500).json({ err }));
+    .catch((err) => res.status(500).json({ message: "sheeesh", err }));
 };
 
-exports.login = (req, res) => {
-  User.findOne({ email: req.body.email })
+module.exports.login = (req, res) => {
+  User.findOne({ mail: req.body.mail })
     .then((user) => {
-      if (!user) {
-        return res.status(401).json({ message: "Incorrect password !" });
-      }
+      // res.status(200).json({ user });
+      if (!user)
+        return res.status(401).json({ message: "Incorrect password ! 1" });
       bcrypt
         .compare(req.body.password, user.password)
         .then((valid) => {
-          if (!valid) {
-            return res.status(401).json({ message: "Incorrect password !" });
-          }
+          if (!valid)
+            return res.status(401).json({ message: "Incorrect password ! 2" });
           res.status(200).json({
             userId: user._id,
             token: jwt.sign({ userId: user._id }, "RANDOM_TOKEN_KEYS", {

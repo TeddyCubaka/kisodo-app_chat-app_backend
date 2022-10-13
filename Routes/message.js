@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const auth = require("../middleware/auth");
 
 const messageCtrl = require("../Controllers/messages");
 
@@ -16,7 +17,7 @@ router.use((req, res, next) => {
   next();
 });
 
-router.get("/", messageCtrl.fingAllMessage);
+router.get("/", auth, messageCtrl.fingAllMessage);
 router.post("/", messageCtrl.writeMessage);
 router.delete("/:id", messageCtrl.deleteMessage);
 
