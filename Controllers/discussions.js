@@ -1,5 +1,4 @@
 const Discussion = require("../models/discusion");
-const Message = require("../models/message")
 
 exports.createDiscussion = (req, res) => {
   const discussion = new Discussion({ ...req.body });
@@ -25,19 +24,21 @@ exports.findAlldiscussion = (req, res) => {
 };
 
 exports.insertMessage = (req, res) => {
+  req.body.message.sendDate = new Date();
   Discussion.updateOne(
     { _id: req.body.discussionId },
-    { $push : { messages : req.body.message }})
+    { $push: { messages: req.body.message } }
+  )
     .then(() =>
       res.status(201).json({
         message: "Missage ajouté with succès !",
       })
     )
-    .catch((err) => res.status(400).json({ err }));
+    .catch((err) => res.status(400).json({ message: err, hello: "Yian !" }));
 };
 
 exports.findOneDiscussion = (req, res) => {
-    Discussion.findOne({ _id : req.params.id })
-        .then(discussion => res.status(200).json(discussion))
-        .catch(err => res.status(404).json({ err }))
-}
+  Discussion.findOne({ _id: req.params.id })
+    .then((discussion) => res.status(200).json(discussion))
+    .catch((err) => res.status(404).json({ err }));
+};
