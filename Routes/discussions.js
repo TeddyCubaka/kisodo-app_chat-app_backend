@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const auth = require("../middleware/auth");
 
 const discutCtrl = require("../Controllers/discussions");
 
@@ -16,11 +17,9 @@ router.use((req, res, next) => {
   next();
 });
 
-router.get("/", discutCtrl.findAlldiscussion);
-router.post("/", discutCtrl.createDiscussion);
-router.post("/add_message", discutCtrl.insertMessage);
-router.get("/:id", discutCtrl.findOneDiscussion);
-
-
+router.get("/", auth, discutCtrl.findAlldiscussion);
+router.post("/", auth, discutCtrl.createDiscussion);
+router.post("/add_message", auth, discutCtrl.insertMessage);
+router.get("/:id", auth, discutCtrl.findOneDiscussion);
 
 module.exports = router;

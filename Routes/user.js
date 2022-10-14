@@ -18,7 +18,7 @@ router.use((req, res, next) => {
 
 router.post("/login", userCtrl.login);
 router.post("/signup", userCtrl.signup);
-router.post("/:id", userCtrl.updateUser);
-router.get("/", userCtrl.getAllUsers);
+router.post("/:id", auth, userCtrl.updateUser);
+router.get("/", auth, userCtrl.getAllUsers);
 
 module.exports = router;
