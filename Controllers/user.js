@@ -4,9 +4,9 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/users");
 
 module.exports.getAllUsers = (req, res) => {
-  User.find()
+  User.find({}, { password: 0, inbox: 0 })
     .then((users) => res.status(200).json(users))
-    .catch((err) => res.status(404).json({ error }));
+    .catch((err) => res.status(404).json({ err }));
 };
 
 module.exports.updateUser = (req, res) => {
@@ -62,6 +62,14 @@ module.exports.findOneUser = (req, res) => {
   User.findOne({ _id: req.params.id }, { password: 0 })
     .then((user) => {
       res.status(200).json(user);
+    })
+    .catch((err) => res.status(404).json({ err }));
+};
+
+module.exports.findUserDiscussions = (req, res) => {
+  User.findOne({ _id: req.params.id })
+    .then((user) => {
+      res.status(200).json(user.inbox);
     })
     .catch((err) => res.status(404).json({ err }));
 };

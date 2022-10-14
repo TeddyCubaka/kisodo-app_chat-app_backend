@@ -22,5 +22,6 @@ router.post("/signup", userCtrl.signup);
 router.post("/:id", auth, userCtrl.updateUser);
 router.get("/", auth, userCtrl.getAllUsers);
 router.get("/:id", auth, userCtrl.findOneUser);
+router.get("/discussion/:id", auth, userCtrl.findUserDiscussions);
 
 module.exports = router;
