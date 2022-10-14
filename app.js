@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const passport = require("passport");
 const session = require("express-session");
+const bodyParser = require("body-parser");
+// const connectEnsureLogin = require("connect-ensure-login");
 require("dotenv").config();
 
 const userRoute = require("./Routes/user");
