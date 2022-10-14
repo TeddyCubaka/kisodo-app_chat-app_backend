@@ -59,9 +59,8 @@ module.exports.login = (req, res) => {
 };
 
 module.exports.findOneUser = (req, res) => {
-  User.findOne({ _id: req.params.id })
+  User.findOne({ _id: req.params.id }, { password: 0 })
     .then((user) => {
-      // delete user.data.password;
       res.status(200).json(user);
     })
     .catch((err) => res.status(404).json({ err }));
