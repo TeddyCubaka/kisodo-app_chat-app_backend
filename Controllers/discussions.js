@@ -9,17 +9,12 @@ exports.createDiscussion = (req, res) => {
         message: "Discussion créé avec succès !",
       })
     )
-    .catch((err) =>
-      res.status(400).json({
-        type: err,
-        cause: req,
-      })
-    );
+    .catch((err) => res.status(400).json({ err }));
 };
 
 exports.findAlldiscussion = (req, res) => {
   Discussion.find()
-    .then((discussions) => res.status(200).json({ discussions }))
+    .then((discussions) => res.status(200).json(discussions))
     .catch((err) => res.status(400).json({ err }));
 };
 

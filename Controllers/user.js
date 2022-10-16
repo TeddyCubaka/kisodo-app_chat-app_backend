@@ -73,3 +73,9 @@ module.exports.findUserDiscussions = (req, res) => {
     })
     .catch((err) => res.status(404).json({ err }));
 };
+
+// module.exports.updateInbox = (req, res) => {
+//   User.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
+//     .then(res.status(201).json({ message: "User update" }))
+//     .catch((err) => res.status(404).json({ err }));
+// }
