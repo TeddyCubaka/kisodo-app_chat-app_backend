@@ -48,3 +48,9 @@ exports.findInBox = (req, res) => {
     .then((data) => res.res(200).json(data))
     .catch((err) => res.status(404).json({ message: err }));
 };
+
+exports.deleteDiscussion = (req, res, next) => {
+  Discussion.deleteOne({ _id: req.params.id })
+    .then(() => res.status(200).json({ message: "object supprimé !" }))
+    .catch((error) => res.status(404).json({ error }));
+};

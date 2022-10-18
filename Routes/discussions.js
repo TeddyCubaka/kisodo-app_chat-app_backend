@@ -21,6 +21,6 @@ router.get("/", auth, discutCtrl.findAlldiscussion);
 router.post("/", auth, discutCtrl.createDiscussion);
 router.post("/add_message", auth, discutCtrl.insertMessage);
 router.get("/:id", auth, discutCtrl.findOneDiscussion);
-router.get("/inbox/:id", auth, discutCtrl.findInBox);
+router.get("/delete/:id", auth, discutCtrl.deleteDiscussion);
 
 module.exports = router;
