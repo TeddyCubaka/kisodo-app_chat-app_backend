@@ -1,16 +1,17 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const passport = require("passport");
 const session = require("express-session");
-const bodyParser = require("body-parser");
-// const connectEnsureLogin = require("connect-ensure-login");
 require("dotenv").config();
+const { createServer } = require("http");
+const { Server } = require("socket.io");
 
 const userRoute = require("./Routes/user");
 const messageRoute = require("./Routes/message");
 const discusionRouter = require("./Routes/discussions");
 
 const app = express();
+
+const httpServer = createServer(app);
 
 mongoose
   .connect(process.env.DATABASE_URL, {
@@ -31,20 +32,30 @@ app.use(
   })
 );
 
-// const LocalStrategy = require("passport-local").Strategy;
-// passport.use(new LocalStrategy(User.authenticate()));
-
-// passport.serializeUser(User.serializeUser());
-// passport.deserializeUser(User.deserializeUser());
-
-// app.use(passport.initialize());
-// app.use(passport.session());
-
 app.use("/api/user", userRoute);
 app.use("/api/message", messageRoute);
 app.use("/api/discussion", discusionRouter);
 
-app.listen(3000, (err) => {
-  if (err) throw err;
-  console.log("sever start on port 3000");
+const io = new Server(httpServer, {});
+
+io.on("connection", (socket) => {
+  console.log(socket);
 });
+
+io.engine.on("initial_headers", (headers, req) => {
+  headers["test"] = "123";
+  headers["set-cookie"] = "mycookie=456";
+});
+
+io.engine.on("headers", (headers, req) => {
+  headers["test"] = "789";
+});
+
+io.engine.on("connection_error", (err) => {
+  console.log(err.req);
+  console.log(err.code);
+  console.log(err.message);
+  console.log(err.context);
+});
+
+httpServer.listen(3000);

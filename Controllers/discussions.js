@@ -4,9 +4,10 @@ exports.createDiscussion = (req, res) => {
   const discussion = new Discussion({ ...req.body });
   discussion
     .save()
-    .then(() =>
+    .then((data) =>
       res.status(201).json({
         message: "Discussion créé avec succès !",
+        discussionId: data._id,
       })
     )
     .catch((err) => res.status(400).json({ err }));
@@ -14,7 +15,9 @@ exports.createDiscussion = (req, res) => {
 
 exports.findAlldiscussion = (req, res) => {
   Discussion.find()
-    .then((discussions) => res.status(200).json(discussions))
+    .then((discussions) => {
+      res.status(200).json(discussions);
+    })
     .catch((err) => res.status(400).json({ err }));
 };
 
@@ -24,16 +27,24 @@ exports.insertMessage = (req, res) => {
     { _id: req.body.discussionId },
     { $push: { messages: req.body.message } }
   )
-    .then(() =>
+    .then(() => {
       res.status(201).json({
         message: "Missage ajouté with succès !",
-      })
-    )
+      });
+    })
     .catch((err) => res.status(400).json({ message: err, hello: "Yian !" }));
 };
 
 exports.findOneDiscussion = (req, res) => {
   Discussion.findOne({ _id: req.params.id })
-    .then((discussion) => res.status(200).json(discussion))
+    .then((discussion) => {
+      res.status(200).json(discussion);
+    })
     .catch((err) => res.status(404).json({ err }));
+};
+
+exports.findInBox = (req, res) => {
+  Discussion.find({ $in: { membres: { userId: req.params.id } } })
+    .then((data) => res.res(200).json(data))
+    .catch((err) => res.status(404).json({ message: err }));
 };
