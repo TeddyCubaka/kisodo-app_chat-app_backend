@@ -46,7 +46,7 @@ exports.findOneDiscussion = (req, res) => {
 exports.findInBox = (req, res) => {
   Discussion.find({ "membres.userId": req.params.id })
     .then((discussions) => res.status(200).json(discussions))
-    .catch((err) => res.status(400).json({ err }));
+    .catch((err) => res.status(404).json({ err }));
 };
 
 exports.deleteDiscussion = (req, res, next) => {

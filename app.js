@@ -3,13 +3,15 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 require("dotenv").config();
 const { createServer } = require("http");
-const { Server } = require("socket.io");
 
 const userRoute = require("./Routes/user");
 const messageRoute = require("./Routes/message");
 const discusionRouter = require("./Routes/discussions");
 
+const path = require("path");
+
 const app = express();
+const http = require("http").Server(app);
 
 const httpServer = createServer(app);
 
@@ -36,26 +38,18 @@ app.use("/api/user", userRoute);
 app.use("/api/message", messageRoute);
 app.use("/api/discussion", discusionRouter);
 
-const io = new Server(httpServer, {});
+const io = require("socket.io")(http);
 
 io.on("connection", (socket) => {
-  console.log(socket);
-});
+  console.log("user connected");
 
-io.engine.on("initial_headers", (headers, req) => {
-  headers["test"] = "123";
-  headers["set-cookie"] = "mycookie=456";
-});
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+  });
 
-io.engine.on("headers", (headers, req) => {
-  headers["test"] = "789";
-});
-
-io.engine.on("connection_error", (err) => {
-  console.log(err.req);
-  console.log(err.code);
-  console.log(err.message);
-  console.log(err.context);
+  socket.on("message", (msg) => {
+    console.log("client message " + msg);
+  });
 });
 
 httpServer.listen(3000);
