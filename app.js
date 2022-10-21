@@ -11,7 +11,7 @@ const discusionRouter = require("./Routes/discussions");
 const path = require("path");
 
 const app = express();
-const http = require("http").Server(app);
+// const http = require("http").Server(app);
 
 const httpServer = createServer(app);
 
@@ -38,7 +38,12 @@ app.use("/api/user", userRoute);
 app.use("/api/message", messageRoute);
 app.use("/api/discussion", discusionRouter);
 
-const io = require("socket.io")(http);
+const io = require("socket.io")(httpServer, {
+  cors : {
+    origin : "http://localhost:3001",
+    methods : ["GET", "POST"],
+  }
+});
 
 io.on("connection", (socket) => {
   console.log("user connected");
@@ -51,5 +56,4 @@ io.on("connection", (socket) => {
     console.log("client message " + msg);
   });
 });
-
-httpServer.listen(3000);
+httpServer.listen(3000)
