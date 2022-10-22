@@ -8,10 +8,11 @@ const userRoute = require("./Routes/user");
 const messageRoute = require("./Routes/message");
 const discusionRouter = require("./Routes/discussions");
 
+const Discussion = require("./models/discusion");
+
 const path = require("path");
 
 const app = express();
-// const http = require("http").Server(app);
 
 const httpServer = createServer(app);
 
@@ -39,21 +40,27 @@ app.use("/api/message", messageRoute);
 app.use("/api/discussion", discusionRouter);
 
 const io = require("socket.io")(httpServer, {
-  cors : {
-    origin : "http://localhost:3001",
-    methods : ["GET", "POST"],
-  }
+  cors: {
+    origin: "http://localhost:3001",
+    methods: ["GET", "POST"],
+  },
 });
 
 io.on("connection", (socket) => {
   console.log("user connected");
+  const userId = socket.id;
+  socket.emit("onLine", userId);
 
   socket.on("disconnect", () => {
     console.log("user disconnected");
   });
 
   socket.on("message", (msg) => {
-    console.log("client message " + msg);
+    console.log("client message " + JSON.stringify(msg));
+  });
+
+  socket.emit("discussion", {
+    message : "sheeesh"
   });
 });
-httpServer.listen(3000)
+httpServer.listen(3000);
