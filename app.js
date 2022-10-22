@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 require("dotenv").config();
 const { createServer } = require("http");
+const PORT = process.env.PORT || 3000
 
 const userRoute = require("./Routes/user");
 const messageRoute = require("./Routes/message");
@@ -52,4 +53,6 @@ io.on("connection", (socket) => {
   });
 });
 
-httpServer.listen(3000);
+httpServer.listen(PORT, ()=>{
+  console.log("listen on port", " ", PORT)
+});
