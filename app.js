@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 require("dotenv").config();
 const { createServer } = require("http");
+const PORT = process.env.PORT || 4000
 
 const userRoute = require("./Routes/user");
 const messageRoute = require("./Routes/message");
@@ -41,26 +42,33 @@ app.use("/api/discussion", discusionRouter);
 
 const io = require("socket.io")(httpServer, {
   cors: {
-    origin: "http://localhost:3001",
-    methods: ["GET", "POST"],
-  },
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"]
+  }
 });
+const discussion = [];
 
 io.on("connection", (socket) => {
-  console.log("user connected");
-  const userId = socket.id;
-  socket.emit("onLine", userId);
+  console.log("user connected")
+  discussion.push({
+    usersId : socket.id
+  })
 
   socket.on("disconnect", () => {
     console.log("user disconnected");
   });
 
   socket.on("message", (msg) => {
-    console.log("client message " + JSON.stringify(msg));
+    discussion.push(msg)
+    socket.broadcast.emit("discussion", discussion);  
+    socket.emit("discussion", discussion);  
   });
 
-  socket.emit("discussion", {
-    message : "sheeesh"
-  });
-});
-httpServer.listen(3000);
+  socket.broadcast.emit("discussion", discussion);
+  socket.emit("discussion", discussion);
+
+})
+
+httpServer.listen(4000, ()=>{
+  console.log("listen on port", " ", PORT)
+})
