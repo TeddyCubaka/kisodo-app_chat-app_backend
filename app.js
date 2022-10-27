@@ -19,7 +19,7 @@ mongoose
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 	})
-	.then(() => console.log("Connexion à MongoDB réussie !"))
+	.then(() => console.log("Connexion à MongoDB réussie !", process.env.DATABASE_URL))
 	.catch(() =>
 		console.log("Connexion à MongoDB échouée !", process.env.DATABASE_URL)
 	);
@@ -39,7 +39,7 @@ app.use("/api/discussion", discusionRouter);
 
 const io = require("socket.io")(httpServer, {
 	cors: {
-		origin: "http://localhost:3000",
+		origin: process.env.CLIENT_ORIGIN,
 		methods: ["GET", "POST"],
 	},
 });
