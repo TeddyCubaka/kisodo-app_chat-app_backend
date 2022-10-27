@@ -1,10 +1,16 @@
-const discussion = []; 
+const discussion = [];
+const userOnline = [];
 
-module.exports = function sockets (socket) {
-    console.log("user connected");
+module.exports = function sockets(socket) {
+	console.log("user connected");
 
 	socket.on("disconnect", () => {
 		console.log("user disconnected");
+			userOnline.filter((user) => {
+				return user.socketId != socket.id;
+			}
+		);
+		console.log(userOnline);
 	});
 
 	socket.on("message", (msg) => {
@@ -16,4 +22,10 @@ module.exports = function sockets (socket) {
 
 	socket.broadcast.emit("discussion", discussion);
 	socket.emit("discussion", discussion);
-}
+	socket.on("online", (user) => {
+		user.socketId = socket.id;
+		userOnline.push(user);
+		socket.emit("userOnline", userOnline);
+	});
+	console.log(userOnline);
+};
