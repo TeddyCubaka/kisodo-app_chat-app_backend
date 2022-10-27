@@ -4,14 +4,11 @@ const session = require("express-session");
 require("dotenv").config();
 const { createServer } = require("http");
 const PORT = process.env.PORT || 4000;
+const socket = require("./Controllers/socket") 
 
 const userRoute = require("./Routes/user");
 const messageRoute = require("./Routes/message");
 const discusionRouter = require("./Routes/discussions");
-
-const Discussion = require("./models/discusion");
-
-const path = require("path");
 
 const app = express();
 
@@ -46,25 +43,8 @@ const io = require("socket.io")(httpServer, {
 		methods: ["GET", "POST"],
 	},
 });
-const discussion = [];
 
-io.on("connection", (socket) => {
-	console.log("user connected");
-
-	socket.on("disconnect", () => {
-		console.log("user disconnected");
-	});
-
-	socket.on("message", (msg) => {
-		discussion.push(msg);
-		discussion.push(socket.id);
-		socket.broadcast.emit("discussion", discussion);
-		socket.emit("discussion", discussion);
-	});
-
-	socket.broadcast.emit("discussion", discussion);
-	socket.emit("discussion", discussion);
-});
+io.on("connection", socket);
 
 httpServer.listen(4000, () => {
 	console.log("listen on port", " ", PORT);
