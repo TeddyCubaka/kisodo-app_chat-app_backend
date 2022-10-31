@@ -1,5 +1,6 @@
 const users = [];
 const rooms = [];
+const sending = [];
 
 module.exports = function sockets(socket) {
 	let room = "";
@@ -19,9 +20,9 @@ module.exports = function sockets(socket) {
 		disc.map((d) => {
 			if (rooms.indexOf(d._id) == -1) rooms.push(d._id);
 		});
-		rooms.map(room => {
-			socket.join(room)
-		})
+		rooms.map((room) => {
+			socket.join(room);
+		});
 	});
 
 	socket.on("join room", (id) => {
@@ -30,6 +31,8 @@ module.exports = function sockets(socket) {
 	});
 
 	socket.on("send", (msg) => {
-		socket.to(room).emit("message", msg);
+		sending.push(msg.message)
+		// const roomMessage = sending.filter(msgs => msgs.discussionId == msg.discussionId)
+		socket.to(room).emit("message", sending);
 	});
 };
