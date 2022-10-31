@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-// const uniqueValidator = require("mongoose-unique-validator");
 const passportLocalMongoose = require("passport-local-mongoose");
 
 const userSchema = new mongoose.Schema({
@@ -23,20 +22,6 @@ const userSchema = new mongoose.Schema({
           biography: { type: String },
         },
       ],
-      lastMessage: {
-        content: { type: String },
-        isPicture: { type: Boolean },
-        delete: { type: Boolean },
-        vue: { type: Boolean },
-        sendDate: { type: Date },
-        sender: {
-          userId: { type: String },
-          fullName: { type: String },
-          image: { type: String },
-          isOnline: { type: Boolean },
-          biography: { type: String },
-        },
-      },
     },
   ],
 });

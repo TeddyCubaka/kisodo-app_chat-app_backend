@@ -74,7 +74,7 @@ module.exports.findUserDiscussions = (req, res) => {
 		.catch((err) => res.status(404).json({ err }));
 };
 
-module.exports.updateInbox = (req, res) => {
+module.exports.updateInbox = (req, res) => {	
 	User.updateOne(
 		{ _id: req.params.id },
 		{ $push: { inbox: req.body.data } }
