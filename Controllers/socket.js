@@ -1,8 +1,8 @@
 const users = [];
-const disc = [];
 const rooms = [];
 
 module.exports = function sockets(socket) {
+	let room = "";
 	console.log("user connected");
 
 	socket.on("disconnect", () => {
@@ -15,17 +15,21 @@ module.exports = function sockets(socket) {
 		socket.emit("userOnline", users);
 	});
 
-	socket.on("join rooms", (disc) => {
+	socket.on("send rooms", (disc) => {
 		disc.map((d) => {
 			if (rooms.indexOf(d._id) == -1) rooms.push(d._id);
 		});
-		console.log(rooms)
+		rooms.map(room => {
+			socket.join(room)
+		})
 	});
 
-	socket.on("send", async (msg) => {
-		const room = await rooms.find((room) => room == msg.discussionId);
+	socket.on("join room", (id) => {
+		room = rooms.find((room) => room == id);
 		socket.join(room);
+	});
+
+	socket.on("send", (msg) => {
 		socket.to(room).emit("message", msg);
-		console.log(room);
 	});
 };
