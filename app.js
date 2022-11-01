@@ -83,12 +83,11 @@ io.on("connection", function sockets(socket) {
 		salon.map((msgs) => {
 			roomMessage.push(msgs.message);
 		});
-		io.to(socket.id).emit("message", roomMessage);
 	});
 
 	socket.on("send", (msg) => {
-		sending.unshift(msg);
-		io.to(room).emit("message", msg.message);
+		msg._id = msg.content;
+		io.to(room).emit("new message", msg);
 	});
 });
 
