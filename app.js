@@ -7,7 +7,6 @@ require("dotenv").config();
 
 const PORT = process.env.PORT || 4000;
 
-const socket = require("./Controllers/socket");
 const userRoute = require("./Routes/user");
 const messageRoute = require("./Routes/message");
 const discusionRouter = require("./Routes/discussions");
