@@ -7,7 +7,7 @@ require("dotenv").config();
 
 const PORT = process.env.PORT || 4000;
 
-const socket = require("./Controllers/socket") 
+const socket = require("./Controllers/socket");
 const userRoute = require("./Routes/user");
 const messageRoute = require("./Routes/message");
 const discusionRouter = require("./Routes/discussions");
@@ -21,7 +21,9 @@ mongoose
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 	})
-	.then(() => console.log("Connexion à MongoDB réussie !", process.env.DATABASE_URL))
+	.then(() =>
+		console.log("Connexion à MongoDB réussie !", process.env.DATABASE_URL)
+	)
 	.catch(() =>
 		console.log("Connexion à MongoDB échouée !", process.env.DATABASE_URL)
 	);
@@ -46,7 +48,49 @@ const io = require("socket.io")(httpServer, {
 	},
 });
 
-io.on("connection", socket);
+const users = [];
+const rooms = [];
+const sending = [];
+
+io.on("connection", function sockets(socket) {
+	let room = "";
+	console.log("user connected");
+
+	socket.on("disconnect", () => {
+		console.log("user disconnected");
+	});
+
+	socket.on("online", (user) => {
+		user.socketId = socket.id;
+		users.push(user);
+		socket.emit("userOnline", users);
+	});
+
+	socket.on("send rooms", (disc) => {
+		disc.map((d) => {
+			if (rooms.indexOf(d._id) == -1) rooms.push(d._id);
+		});
+		rooms.map((room) => {
+			socket.join(room);
+		});
+	});
+
+	socket.on("join room", (id) => {
+		room = rooms.find((room) => room == id);
+		socket.join(room);
+		const salon = sending.filter((msgs) => msgs.discussionId == id);
+		const roomMessage = [];
+		salon.map((msgs) => {
+			roomMessage.push(msgs.message);
+		});
+		io.to(socket.id).emit("message", roomMessage);
+	});
+
+	socket.on("send", (msg) => {
+		sending.unshift(msg);
+		io.to(room).emit("message", msg.message);
+	});
+});
 
 httpServer.listen(4000, () => {
 	console.log("listen on port", " ", PORT);

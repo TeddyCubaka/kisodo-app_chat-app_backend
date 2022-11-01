@@ -1,7 +1,7 @@
+const { io } = require("../app");
 const users = [];
 const rooms = [];
 const sending = [];
-
 module.exports = function sockets(socket) {
 	let room = "";
 	console.log("user connected");
@@ -28,11 +28,17 @@ module.exports = function sockets(socket) {
 	socket.on("join room", (id) => {
 		room = rooms.find((room) => room == id);
 		socket.join(room);
+		const salon = sending.filter((msgs) => msgs.discussionId == id);
+		const roomMessage = [];
+		salon.map((msgs) => {
+			roomMessage.push(msgs.message);
+		});
+		// io.to(room).emit("message", roomMessage);
+		// socket.of(room).emit("message", roomMessage);
 	});
 
 	socket.on("send", (msg) => {
-		sending.push(msg.message)
-		// const roomMessage = sending.filter(msgs => msgs.discussionId == msg.discussionId)
-		socket.to(room).emit("message", sending);
+		sending.unshift(msg);
+		socket.to(room).emit("message", msg.message);
 	});
 };
