@@ -35,6 +35,7 @@ app.use(
 		saveUninitialized: true,
 	})
 );
+app.use(express.static("files"));
 
 app.use("/api/user", userRoute);
 app.use("/api/message", messageRoute);
@@ -87,6 +88,10 @@ io.on("connection", function sockets(socket) {
 	socket.on("send", (msg) => {
 		msg._id = msg.content;
 		io.to(room).emit("new message", msg);
+	});
+
+	socket.on("image", (img) => {
+		console.log(img);
 	});
 });
 
