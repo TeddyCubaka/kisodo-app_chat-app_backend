@@ -10,8 +10,9 @@ module.exports.getAllUsers = (req, res) => {
 };
 
 module.exports.updateUser = (req, res) => {
+	console.log(req.body);
 	User.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
-		.then(res.status(201).json({ message: "User update" }))
+		.then((data) => res.status(201).json({ message: "User update", data }))
 		.catch((err) => res.status(404).json({ err }));
 };
 
@@ -74,11 +75,8 @@ module.exports.findUserDiscussions = (req, res) => {
 		.catch((err) => res.status(404).json({ err }));
 };
 
-module.exports.updateInbox = (req, res) => {	
-	User.updateOne(
-		{ _id: req.params.id },
-		{ $push: { inbox: req.body.data } }
-	)
+module.exports.updateInbox = (req, res) => {
+	User.updateOne({ _id: req.params.id }, { $push: { inbox: req.body.data } })
 		.then((data) => res.status(201).json({ message: "User update", data }))
 		.catch((err) => res.status(404).json({ err }));
 };
