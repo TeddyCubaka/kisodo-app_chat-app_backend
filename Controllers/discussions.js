@@ -23,6 +23,7 @@ exports.findAlldiscussion = (req, res) => {
 
 exports.insertMessage = (req, res) => {
 	req.body.message.sendDate = new Date();
+	req.body.message.delete = false;
 	Discussion.updateOne(
 		{ _id: req.body.discussionId },
 		{ $push: { messages: req.body.message } }
@@ -49,13 +50,19 @@ exports.findInBox = (req, res) => {
 		.catch((err) => res.status(404).json({ err }));
 };
 
-exports.deleteDiscussion = (req, res, next) => {
-	Discussion.deleteOne({ _id: req.params.id })
+exports.deleteDiscussion = (req, res) => {
+	Discussion.deleteOne({ _id: req.body.messageId })
 		.then(() => res.status(200).json({ message: "object supprimé !" }))
 		.catch((error) => res.status(404).json({ error }));
 };
 
-exports.addMessageAsImage = (req, res, next) => {
-	console.log(req.files);
-	res.status(200).send({ reçu: "yeah" });
+exports.deleteMessage = (req, res) => {
+	Discussion.updateOne(
+		{ _id: req.body.discussionId },
+		{ $pull: { messages: { _id: req.body.messageId } } }
+	)
+		.then((data) => {
+			res.status(200).json(data);
+		})
+		.catch((err) => res.status(404).json(err));
 };

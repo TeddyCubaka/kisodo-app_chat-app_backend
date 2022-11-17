@@ -23,6 +23,6 @@ router.post("/add_message", auth, discutCtrl.insertMessage);
 router.get("/:id", auth, discutCtrl.findOneDiscussion);
 router.get("/delete/:id", auth, discutCtrl.deleteDiscussion);
 router.get("/inbox/:id", auth, discutCtrl.findInBox);
-router.post("/image", discutCtrl.addMessageAsImage);
+router.post("/delete_message", discutCtrl.deleteMessage);
 
 module.exports = router;

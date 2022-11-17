@@ -34,7 +34,7 @@ module.exports.signup = (req, res) => {
 				.then(() => res.status(201).json({ message: "utilisateur ajouté !" }))
 				.catch((err) => res.status(400).json({ err }));
 		})
-		.catch((err) => res.status(500).json({ message: "sheeesh", err }));
+		.catch((err) => res.status(500).json({ err, dataSent: req.body}));
 };
 
 module.exports.login = (req, res) => {

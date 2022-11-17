@@ -48,23 +48,32 @@ const io = require("socket.io")(httpServer, {
 	},
 });
 
-const users = [];
+let users = [];
 const rooms = [];
 const sending = [];
+const connected = [];
 
 io.on("connection", function sockets(socket) {
 	let room = "";
-	console.log("user connected");
+	connected.push(socket.id);
 
 	socket.on("disconnect", () => {
-		console.log("user disconnected");
+		users = users.filter((user) => {
+			return user.socketId !== socket.id;
+		});
 	});
 
 	socket.on("online", (user) => {
 		user.socketId = socket.id;
+		users = users.filter((usr) => {
+			return usr.userId !== user.userId;
+		});
+		user.onLine = true;
 		users.push(user);
 		socket.emit("userOnline", users);
 	});
+
+	socket.emit("userOnline", users);
 
 	socket.on("send rooms", (disc) => {
 		disc.map((d) => {
