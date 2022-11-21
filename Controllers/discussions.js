@@ -22,8 +22,10 @@ exports.findAlldiscussion = (req, res) => {
 };
 
 exports.insertMessage = (req, res) => {
-	req.body.message.sendDate = new Date();
+	req.body.message.sendDate = new Date().toLocaleDateString();
 	req.body.message.delete = false;
+	req.body.message.sendDateBigFormat = new Date();
+	if (req.body.isPicture) console.log(req.body);
 	Discussion.updateOne(
 		{ _id: req.body.discussionId },
 		{ $push: { messages: req.body.message } }

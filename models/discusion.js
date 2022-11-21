@@ -16,10 +16,18 @@ const discussionSchema = new mongoose.Schema({
 		{
 			content: { type: String },
 			isPicture: { type: Boolean },
-			pictureUrl: { type: String },
+			image: {
+				url: { type: String },
+				width: { type: String },
+				height: { type: String },
+				originalFilename: { type: String },
+				format: { type: String },
+				createDate: { type: String },
+			},
 			delete: { type: Boolean },
 			vue: { type: Boolean },
-			sendDate: { type: Date },
+			sendDate: { type: String },
+			sendDateBigFormat: { type: Date },
 			sender: {
 				userId: { type: String },
 				fullName: { type: String },

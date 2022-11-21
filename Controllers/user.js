@@ -10,7 +10,6 @@ module.exports.getAllUsers = (req, res) => {
 };
 
 module.exports.updateUser = (req, res) => {
-	console.log(req.body);
 	User.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
 		.then((data) => res.status(201).json({ message: "User update", data }))
 		.catch((err) => res.status(404).json({ err }));
@@ -34,7 +33,7 @@ module.exports.signup = (req, res) => {
 				.then(() => res.status(201).json({ message: "utilisateur ajouté !" }))
 				.catch((err) => res.status(400).json({ err }));
 		})
-		.catch((err) => res.status(500).json({ err, dataSent: req.body}));
+		.catch((err) => res.status(500).json({ err, dataSent: req.body }));
 };
 
 module.exports.login = (req, res) => {
@@ -77,6 +76,6 @@ module.exports.findUserDiscussions = (req, res) => {
 
 module.exports.updateInbox = (req, res) => {
 	User.updateOne({ _id: req.params.id }, { $push: { inbox: req.body.data } })
-		.then((data) => res.status(201).json({ message: "User update", data }))
+		.then((data) => res.status(201).json({ message: "User updated", data }))
 		.catch((err) => res.status(404).json({ err }));
 };
