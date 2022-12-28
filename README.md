@@ -1,12 +1,19 @@
 # Kisodo-app _ backend
 
-Cette application permet un chat en temps réél. Il réprésente que la partie backend. 
-Pour la partie fontend, visitez ce dépôt kisodo-app_frontend https://github.com/TeddyCubaka/kisodo_app-chat_app-frontend.git
+This is the server of a realtime chatapp. Youo will found the frontend here => https://github.com/TeddyCubaka/kisodo_app-chat_app-frontend.git
+
+## Technologies
+
+- node js
+- express js 
+- passport js
+- socket.io to handle real-time data transfer
+- mongodb for database
 
 ## Installation 
-1. Cloner le repo 
-2. Après le clonage, faite un `yarn install` pour installer toute les dépedances du projet.
-3. Pour ce qui est de la base de donnée, créer un fichier *.env*, référez-vous au modèle dans le fichier .env.example et enfin mettez le lien de votre base de donnée.
+1.Clone this repositoy
+2. Run `yarn install`.
+3. Create a .env file and in it create two variable DATABASE_URL for database link and CLIENT_ORIGIN for client link.
 
-## Démarrage
-Pour démarrer l'application faites un  `yarn start`.
+## Running
+Run `yarn start` to start the server.
